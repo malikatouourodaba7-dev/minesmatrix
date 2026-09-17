@@ -5,34 +5,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGNAL BOT AI</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
         body { background-color: #0b0e14; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
         .app-container { width: 100%; max-width: 420px; background: #121824; border-radius: 20px; padding: 15px; border: 1px solid #1f293d; text-align: center; }
         
         /* Header */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; }
-        .title { font-size: 1.1rem; color: #3b82f6; display: flex; align-items: center; gap: 5px; }
-        .user-info { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; background: #1a2234; padding: 6px 12px; border-radius: 20px; border: 1px solid #2a364f; }
+        .header { display: flex; justify-content: center; align-items: center; margin-bottom: 15px; font-weight: bold; }
+        .title { font-size: 1.1rem; color: #3b82f6; letter-spacing: 1px; }
         
         /* Games Grid Menu */
         .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
-        .game-card { background: #1a2234; border: 1px solid #2a364f; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative; text-align: left; }
-        .game-card:hover { transform: scale(1.02); border-color: #3b82f6; }
-        .game-card.full-width { grid-column: span 2; }
-        .game-card img { width: 100%; height: 100px; object-fit: cover; display: block; }
-        .game-card.full-width img { height: 110px; }
-        .game-card .badge { position: absolute; top: 8px; left: 8px; background: #22c55e; color: black; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .game-card { 
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+            border: 1px solid #334155; 
+            border-radius: 14px; 
+            height: 90px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer; 
+            transition: transform 0.2s, border-color 0.2s; 
+            position: relative; 
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        .game-card:active { transform: scale(0.97); }
+        .game-card:hover { border-color: #3b82f6; }
+        .game-card.full-width { grid-column: span 2; height: 100px; background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%); }
+        
+        .game-card .game-icon { font-size: 1.8rem; margin-bottom: 4px; }
+        .game-card .game-title { font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .game-card .game-sub { font-size: 0.7rem; color: #94a3b8; margin-top: 2px; }
+        
+        .game-card .badge { position: absolute; top: 6px; left: 6px; background: #22c55e; color: black; font-size: 0.6rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
         .game-card .badge.orange { background: #f97316; color: white; }
+
+        /* Color Themes for Cards */
+        .card-avia { border-color: #f59e0b; }
+        .card-avia .game-title { color: #fbbf24; }
+        .card-mines { border-color: #06b6d4; }
+        .card-mines .game-title { color: #38bdf8; }
+        .card-spribe { border-color: #3b82f6; }
+        .card-spribe .game-title { color: #60a5fa; }
+        .card-king { border-color: #a855f7; }
+        .card-king .game-title { color: #c084fc; }
+        .card-chicken { border-color: #ef4444; }
+        .card-chicken .game-title { color: #f87171; }
+        .card-speed { border-color: #10b981; }
+        .card-speed .game-title { color: #34d399; }
+        .card-balloon { border-color: #ec4899; }
+        .card-balloon .game-title { color: #f472b6; }
         
         /* Mines Game Screen */
         .hidden { display: none; }
-        .controls { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
-        .trap-btn { background: #1a2234; border: 1px solid #2a364f; color: white; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .controls-label { font-size: 0.85rem; color: #9ca3af; margin-bottom: 8px; font-weight: bold; }
+        .controls { display: flex; justify-content: center; gap: 6px; margin: 10px 0 15px 0; flex-wrap: wrap; }
+        .trap-btn { background: #1a2234; border: 1px solid #2a364f; color: white; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9rem; min-width: 38px; }
         .trap-btn.active { background: #22c55e; border-color: #16a34a; color: black; }
 
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
-        .cell { aspect-ratio: 1; background: #1a2234; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 1px solid #2a364f; }
-        
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 15px 0; }
+        .cell { aspect-ratio: 1; background: #1a2234; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 1px solid #2a364f; transition: all 0.2s; }
+        .cell.star { background: #1e3a8a; border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.5); }
+
         /* Buttons */
         .btn-main { width: 100%; background: #22c55e; color: black; border: none; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
         .btn-main:hover { background: #16a34a; }
@@ -51,64 +86,76 @@
         
         <div class="games-grid">
             <!-- Avia Masters -->
-            <div class="game-card full-width" onclick="alert('Indisponible pour le moment')">
-                <span class="badge orange">YANGI</span>
-                <img src="https://i.ibb.co/3sN90S4/avia-masters.jpg" alt="Avia Masters" onerror="this.src='https://via.placeholder.com/400x110/1e293b/ffffff?text=AVIA+MASTERS'">
+            <div class="game-card full-width card-avia" onclick="alert('Indisponible pour le moment')">
+                <span class="badge orange">NOUVEAU</span>
+                <div class="game-icon">✈️</div>
+                <div class="game-title">AVIA MASTERS</div>
             </div>
 
             <!-- Mines 1Win -->
-            <div class="game-card" onclick="openGame('Mines')">
-                <span class="badge orange">TANLANGAN</span>
-                <img src="https://i.ibb.co/HnJ7171/mines.jpg" alt="Mines" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=MINES'">
+            <div class="game-card card-mines" onclick="openGame('Mines 1Win')">
+                <span class="badge orange">POPULAIRE</span>
+                <div class="game-icon">💣</div>
+                <div class="game-title">MINES</div>
+                <div class="game-sub">1Win</div>
             </div>
 
             <!-- Mines Spribe -->
-            <div class="game-card" onclick="openGame('Mines')">
-                <span class="badge orange">TANLANGAN</span>
-                <img src="https://i.ibb.co/mCRzKzq/mines-spribe.jpg" alt="Mines Spribe" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=MINES+SPRIBE'">
+            <div class="game-card card-spribe" onclick="openGame('Mines Spribe')">
+                <span class="badge orange">POPULAIRE</span>
+                <div class="game-icon">⭐</div>
+                <div class="game-title">MINES</div>
+                <div class="game-sub">Spribe</div>
             </div>
 
             <!-- King Thimbles -->
-            <div class="game-card" onclick="alert('Indisponible pour le moment')">
-                <span class="badge">YANGI</span>
-                <img src="https://i.ibb.co/y8y3g4P/king-thimbles.jpg" alt="King Thimbles" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=KING+THIMBLES'">
+            <div class="game-card card-king" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">NOUVEAU</span>
+                <div class="game-icon">👑</div>
+                <div class="game-title">KING THIMBLES</div>
             </div>
 
             <!-- Chicken Road -->
-            <div class="game-card" onclick="alert('Indisponible pour le moment')">
-                <span class="badge">YANGI</span>
-                <img src="https://i.ibb.co/BccqJ0S/chicken-road.jpg" alt="Chicken Road" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=CHICKEN+ROAD'">
+            <div class="game-card card-chicken" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">NOUVEAU</span>
+                <div class="game-icon">🐔</div>
+                <div class="game-title">CHICKEN ROAD</div>
             </div>
 
             <!-- Speed & Cash -->
-            <div class="game-card" onclick="alert('Indisponible pour le moment')">
-                <span class="badge">YANGI</span>
-                <img src="https://i.ibb.co/4T727T4/speed-cash.jpg" alt="Speed & Cash" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=SPEED+%26+CASH'">
+            <div class="game-card card-speed" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">NOUVEAU</span>
+                <div class="game-icon">🏎️</div>
+                <div class="game-title">SPEED & CASH</div>
             </div>
 
             <!-- Balloon -->
-            <div class="game-card" onclick="alert('Indisponible pour le moment')">
-                <span class="badge">YANGI</span>
-                <img src="https://i.ibb.co/yY1hN2z/balloon.jpg" alt="Balloon" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=BALLOON'">
+            <div class="game-card card-balloon" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">NOUVEAU</span>
+                <div class="game-icon">🎈</div>
+                <div class="game-title">BALLOON</div>
             </div>
         </div>
 
-        <button class="btn-share" onclick="alert('Lien partagé !')">Поделиться ботом</button>
+        <button class="btn-share" onclick="alert('Lien partagé !')">Partager le bot</button>
     </div>
 
     <!-- ECRAN JEU MINES -->
     <div id="mines-screen" class="hidden">
         <button class="btn-back" onclick="showMenu()">← Retour au menu</button>
         <div class="header">
-            <span class="title">MINES AI BOT</span>
+            <span class="title" id="game-title-header">MINES AI BOT</span>
         </div>
 
-        <p style="font-size: 0.85rem; color: #9ca3af;">Nombre de pièges :</p>
+        <p class="controls-label">Nombre de pièges (mines) dans le jeu :</p>
         <div class="controls">
             <button class="trap-btn" onclick="setTraps(1, this)">1</button>
+            <button class="trap-btn" onclick="setTraps(2, this)">2</button>
             <button class="trap-btn active" onclick="setTraps(3, this)">3</button>
             <button class="trap-btn" onclick="setTraps(4, this)">4</button>
             <button class="trap-btn" onclick="setTraps(5, this)">5</button>
+            <button class="trap-btn" onclick="setTraps(6, this)">6</button>
+            <button class="trap-btn" onclick="setTraps(7, this)">7</button>
         </div>
 
         <div class="grid" id="grid"></div>
@@ -130,12 +177,11 @@
         }
     }
 
-    function openGame(gameName) {
-        if(gameName === 'Mines') {
-            document.getElementById('main-menu').classList.add('hidden');
-            document.getElementById('mines-screen').classList.remove('hidden');
-            createGrid();
-        }
+    function openGame(name) {
+        document.getElementById('game-title-header').innerText = name.toUpperCase() + ' AI BOT';
+        document.getElementById('main-menu').classList.add('hidden');
+        document.getElementById('mines-screen').classList.remove('hidden');
+        createGrid();
     }
 
     function showMenu() {
@@ -149,21 +195,28 @@
         btn.classList.add('active');
     }
 
+    // Stratégie d'analyse selon le nombre de pièges
     function getSignal() {
         createGrid();
         const cells = document.querySelectorAll('.cell');
         
-        let starsCount = 4;
-        if (selectedTraps === 1) starsCount = 5;
-        if (selectedTraps >= 4) starsCount = 3;
+        // Détermination du nombre de cases sûres selon la sécurité/risque du nombre de pièges
+        let safeSpotsCount = 4;
+        if (selectedTraps === 1) safeSpotsCount = 6;
+        else if (selectedTraps === 2) safeSpotsCount = 5;
+        else if (selectedTraps === 3) safeSpotsCount = 4;
+        else if (selectedTraps === 4) safeSpotsCount = 3;
+        else if (selectedTraps >= 5) safeSpotsCount = 2;
 
+        // Génération des emplacements optimisés
         const indices = [];
-        while(indices.length < starsCount) {
+        while(indices.length < safeSpotsCount) {
             const r = Math.floor(Math.random() * 25);
             if(!indices.includes(r)) indices.push(r);
         }
 
         indices.forEach(idx => {
+            cells[idx].classList.add('star');
             cells[idx].innerHTML = '⭐';
         });
     }
@@ -171,4 +224,5 @@
 
 </body>
 </html>
+
 

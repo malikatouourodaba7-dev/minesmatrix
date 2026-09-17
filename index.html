@@ -3,74 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MinesMatrix AI</title>
+    <title>SIGNAL BOT AI</title>
     <style>
-        body {
-            background-color: #0f172a;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            max-width: 300px;
-            margin: 20px auto;
-        }
-        .cell {
-            width: 50px;
-            height: 50px;
-            background-color: #1e293b;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-        .btn-play {
-            background-color: #0088cc;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #0b0e14; color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        .app-container { width: 100%; max-width: 420px; background: #121824; border-radius: 20px; padding: 15px; border: 1px solid #1f293d; text-align: center; }
+        
+        /* Header */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: bold; }
+        .title { font-size: 1.1rem; color: #3b82f6; display: flex; align-items: center; gap: 5px; }
+        .user-info { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; background: #1a2234; padding: 6px 12px; border-radius: 20px; border: 1px solid #2a364f; }
+        
+        /* Games Grid Menu */
+        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        .game-card { background: #1a2234; border: 1px solid #2a364f; border-radius: 14px; overflow: hidden; cursor: pointer; transition: transform 0.2s; position: relative; text-align: left; }
+        .game-card:hover { transform: scale(1.02); border-color: #3b82f6; }
+        .game-card.full-width { grid-column: span 2; }
+        .game-card img { width: 100%; height: 100px; object-fit: cover; display: block; }
+        .game-card.full-width img { height: 110px; }
+        .game-card .badge { position: absolute; top: 8px; left: 8px; background: #22c55e; color: black; font-size: 0.65rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .game-card .badge.orange { background: #f97316; color: white; }
+        
+        /* Mines Game Screen */
+        .hidden { display: none; }
+        .controls { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
+        .trap-btn { background: #1a2234; border: 1px solid #2a364f; color: white; padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .trap-btn.active { background: #22c55e; border-color: #16a34a; color: black; }
+
+        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 20px 0; }
+        .cell { aspect-ratio: 1; background: #1a2234; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border: 1px solid #2a364f; }
+        
+        /* Buttons */
+        .btn-main { width: 100%; background: #22c55e; color: black; border: none; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 1rem; cursor: pointer; margin-top: 10px; }
+        .btn-main:hover { background: #16a34a; }
+        .btn-share { width: 100%; background: #9333ea; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; font-size: 0.9rem; cursor: pointer; margin-top: 15px; }
+        .btn-back { background: transparent; border: none; color: #9ca3af; cursor: pointer; margin-bottom: 10px; font-size: 0.9rem; display: inline-block; }
     </style>
 </head>
 <body>
 
-    <h2>MinesMatrix AI ⚡</h2>
-    
-    <div class="grid" id="grid"></div>
+<div class="app-container">
+    <!-- MENU PRINCIPAL -->
+    <div id="main-menu">
+        <div class="header">
+            <span class="title">⚡ SIGNAL BOT AI ⚡</span>
+        </div>
+        
+        <div class="games-grid">
+            <!-- Avia Masters -->
+            <div class="game-card full-width" onclick="alert('Indisponible pour le moment')">
+                <span class="badge orange">YANGI</span>
+                <img src="https://i.ibb.co/3sN90S4/avia-masters.jpg" alt="Avia Masters" onerror="this.src='https://via.placeholder.com/400x110/1e293b/ffffff?text=AVIA+MASTERS'">
+            </div>
 
-    <button class="btn-play" onclick="generateSignal()">GET SIGNAL</button>
+            <!-- Mines 1Win -->
+            <div class="game-card" onclick="openGame('Mines')">
+                <span class="badge orange">TANLANGAN</span>
+                <img src="https://i.ibb.co/HnJ7171/mines.jpg" alt="Mines" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=MINES'">
+            </div>
 
-    <script>
+            <!-- Mines Spribe -->
+            <div class="game-card" onclick="openGame('Mines')">
+                <span class="badge orange">TANLANGAN</span>
+                <img src="https://i.ibb.co/mCRzKzq/mines-spribe.jpg" alt="Mines Spribe" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=MINES+SPRIBE'">
+            </div>
+
+            <!-- King Thimbles -->
+            <div class="game-card" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">YANGI</span>
+                <img src="https://i.ibb.co/y8y3g4P/king-thimbles.jpg" alt="King Thimbles" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=KING+THIMBLES'">
+            </div>
+
+            <!-- Chicken Road -->
+            <div class="game-card" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">YANGI</span>
+                <img src="https://i.ibb.co/BccqJ0S/chicken-road.jpg" alt="Chicken Road" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=CHICKEN+ROAD'">
+            </div>
+
+            <!-- Speed & Cash -->
+            <div class="game-card" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">YANGI</span>
+                <img src="https://i.ibb.co/4T727T4/speed-cash.jpg" alt="Speed & Cash" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=SPEED+%26+CASH'">
+            </div>
+
+            <!-- Balloon -->
+            <div class="game-card" onclick="alert('Indisponible pour le moment')">
+                <span class="badge">YANGI</span>
+                <img src="https://i.ibb.co/yY1hN2z/balloon.jpg" alt="Balloon" onerror="this.src='https://via.placeholder.com/200x100/1e293b/ffffff?text=BALLOON'">
+            </div>
+        </div>
+
+        <button class="btn-share" onclick="alert('Lien partagé !')">Поделиться ботом</button>
+    </div>
+
+    <!-- ECRAN JEU MINES -->
+    <div id="mines-screen" class="hidden">
+        <button class="btn-back" onclick="showMenu()">← Retour au menu</button>
+        <div class="header">
+            <span class="title">MINES AI BOT</span>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #9ca3af;">Nombre de pièges :</p>
+        <div class="controls">
+            <button class="trap-btn" onclick="setTraps(1, this)">1</button>
+            <button class="trap-btn active" onclick="setTraps(3, this)">3</button>
+            <button class="trap-btn" onclick="setTraps(4, this)">4</button>
+            <button class="trap-btn" onclick="setTraps(5, this)">5</button>
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <button class="btn-main" onclick="getSignal()">OBTENIR LE SIGNAL</button>
+    </div>
+</div>
+
+<script>
+    let selectedTraps = 3;
+
+    function createGrid() {
         const grid = document.getElementById('grid');
+        grid.innerHTML = '';
         for (let i = 0; i < 25; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
-            cell.id = 'cell-' + i;
             grid.appendChild(cell);
         }
+    }
 
-        function generateSignal() {
-            for (let i = 0; i < 25; i++) {
-                document.getElementById('cell-' + i).innerText = '';
-            }
-            let stars = [];
-            while(stars.length < 4){
-                let r = Math.floor(Math.random() * 25);
-                if(stars.indexOf(r) === -1) stars.push(r);
-            }
-            stars.forEach(index => {
-                document.getElementById('cell-' + index).innerText = '⭐';
-            });
+    function openGame(gameName) {
+        if(gameName === 'Mines') {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('mines-screen').classList.remove('hidden');
+            createGrid();
         }
-    </script>
+    }
+
+    function showMenu() {
+        document.getElementById('mines-screen').classList.add('hidden');
+        document.getElementById('main-menu').classList.remove('hidden');
+    }
+
+    function setTraps(count, btn) {
+        selectedTraps = count;
+        document.querySelectorAll('.trap-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    function getSignal() {
+        createGrid();
+        const cells = document.querySelectorAll('.cell');
+        
+        let starsCount = 4;
+        if (selectedTraps === 1) starsCount = 5;
+        if (selectedTraps >= 4) starsCount = 3;
+
+        const indices = [];
+        while(indices.length < starsCount) {
+            const r = Math.floor(Math.random() * 25);
+            if(!indices.includes(r)) indices.push(r);
+        }
+
+        indices.forEach(idx => {
+            cells[idx].innerHTML = '⭐';
+        });
+    }
+</script>
+
 </body>
 </html>
+

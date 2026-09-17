@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MinesMatrix AI</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            max-width: 300px;
+            margin: 20px auto;
+        }
+        .cell {
+            width: 50px;
+            height: 50px;
+            background-color: #1e293b;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .btn-play {
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>MinesMatrix AI ⚡</h2>
+    
+    <div class="grid" id="grid"></div>
+
+    <button class="btn-play" onclick="generateSignal()">GET SIGNAL</button>
+
+    <script>
+        const grid = document.getElementById('grid');
+        for (let i = 0; i < 25; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.id = 'cell-' + i;
+            grid.appendChild(cell);
+        }
+
+        function generateSignal() {
+            for (let i = 0; i < 25; i++) {
+                document.getElementById('cell-' + i).innerText = '';
+            }
+            let stars = [];
+            while(stars.length < 4){
+                let r = Math.floor(Math.random() * 25);
+                if(stars.indexOf(r) === -1) stars.push(r);
+            }
+            stars.forEach(index => {
+                document.getElementById('cell-' + index).innerText = '⭐';
+            });
+        }
+    </script>
+</body>
+</html>
